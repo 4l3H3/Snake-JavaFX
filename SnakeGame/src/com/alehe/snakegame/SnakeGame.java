@@ -35,35 +35,38 @@ public class SnakeGame extends Application {
 	private Label gameoverlabel = new Label("Game Over");
 	private Label scorelabel = new Label(Integer.toString(score));
 
-	private boolean[] moveWASD = { false, false, false, false };
+	private Move headMovement = Move.NONE;
 	private boolean gameover = false;
 
 	private void increasePlayerBody() {
-		if (playerhead.getLastMove() != null) {
-			Player tail = playerbody.get(playerbody.size() - 1);
-			switch (tail.getLastMove()) {
-			case UP:
-				playerbody.add(new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() + playersize, Color.GREEN));
-				break;
-			case RIGHT:
-				playerbody.add(new Player(playersize, (int) tail.getLayoutX() - playersize, (int) tail.getLayoutY(), Color.GREEN));
-				break;
-			case LEFT:
-				playerbody.add(new Player(playersize, (int) tail.getLayoutX() + playersize, (int) tail.getLayoutY(), Color.GREEN));
-				break;
-			case DOWN:
-				playerbody.add(new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() - playersize, Color.GREEN));
-				break;
-			// ..
-			default:
-				break;
-			}
-			root.getChildren().add(playerbody.get(playerbody.size() - 1));
+		Player tail = playerbody.get(playerbody.size() - 1);
+		switch (tail.getLastMove()) {
+		case UP:
+			playerbody.add(
+					new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() + playersize, Color.GREEN));
+			break;
+		case RIGHT:
+			playerbody.add(
+					new Player(playersize, (int) tail.getLayoutX() - playersize, (int) tail.getLayoutY(), Color.GREEN));
+			break;
+		case LEFT:
+			playerbody.add(
+					new Player(playersize, (int) tail.getLayoutX() + playersize, (int) tail.getLayoutY(), Color.GREEN));
+			break;
+		case DOWN:
+			playerbody.add(
+					new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() - playersize, Color.GREEN));
+			break;
+		// ..
+		default:
+			break;
 		}
+		root.getChildren().add(playerbody.get(playerbody.size() - 1));
+
 	}
 
 	private void movePlayerBody() {
-		if (playerhead.getPenultimateMove() != null && playerbody.size() > 1) {
+		if (playerbody.size() > 1) {
 			for (int i = 1; i < playerbody.size(); i++) {
 				switch (playerbody.get(i - 1).getPenultimateMove()) {
 				case UP:
@@ -119,14 +122,22 @@ public class SnakeGame extends Application {
 
 	private void update() {
 		if (!gameover) {
-			if (moveWASD[0])
+			switch (headMovement) {
+			case UP:
 				playerhead.moveUp();
-			else if (moveWASD[1])
-				playerhead.moveLeft();
-			else if (moveWASD[2])
-				playerhead.moveDown();
-			else if (moveWASD[3])
+				break;
+			case RIGHT:
 				playerhead.moveRight();
+				break;
+			case LEFT:
+				playerhead.moveLeft();
+				break;
+			case DOWN:
+				playerhead.moveDown();
+				break;
+			default:
+				break;
+			}
 
 			checkBodyCollision();
 			movePlayerBody();
@@ -181,16 +192,16 @@ public class SnakeGame extends Application {
 		scene.setOnKeyPressed(e -> {
 			switch (e.getCode()) {
 			case A:
-				moveWASD = new boolean[] { false, true, false, false };
+				headMovement = Move.LEFT;
 				break;
 			case S:
-				moveWASD = new boolean[] { false, false, true, false };
+				headMovement = Move.DOWN;
 				break;
 			case D:
-				moveWASD = new boolean[] { false, false, false, true };
+				headMovement = Move.RIGHT;
 				break;
 			case W:
-				moveWASD = new boolean[] { true, false, false, false };
+				headMovement = Move.UP;
 				break;
 			default:
 				break;

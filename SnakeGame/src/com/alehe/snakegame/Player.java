@@ -6,8 +6,8 @@ import javafx.scene.shape.Rectangle;
 
 public class Player extends Rectangle {
 	private int size;
-	private Move lastmove = null;
-	private Move penultimatemove = null;
+	private Move lastmove = Move.NONE;
+	private Move penultimatemove = Move.NONE;
 
 	public Player(int size, int x, int y, Color color) {
 		super(size, size, color);
