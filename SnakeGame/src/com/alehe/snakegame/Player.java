@@ -14,7 +14,6 @@ public class Player extends Rectangle {
 		this.size = size;
 		setLayoutX(x);
 		setLayoutY(y);
-		setStyle("opacity: 0.6;");
 	}
 
 	public void moveUp() {
