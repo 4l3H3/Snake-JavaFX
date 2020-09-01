@@ -122,7 +122,7 @@ public class SnakeGame extends Application {
 				break;
 			}
 
-			if (checkBodyCollision()){
+			if (checkBodyCollision()) {
 				gameover = true;
 				root.getChildren().add(gameoverlabel);
 			}
@@ -176,8 +176,8 @@ public class SnakeGame extends Application {
 	}
 
 	/*
-	 * moves the entire playerbody without the head bases on the penultimate direction the
-	 * former part took
+	 * moves the entire playerbody without the head bases on the penultimate
+	 * direction the former part took
 	 */
 	private void movePlayerBody() {
 		if (playerbody.size() > 1) {
@@ -199,23 +199,24 @@ public class SnakeGame extends Application {
 					break;
 				}
 			}
-
 		}
 	}
 
 	/*
-	 * removes the Fruit from the pane, changes position and add the fruit back to the pane
+	 * removes the Fruit from the pane, changes position and add the fruit back to
+	 * the pane
 	 */
 	private void updateFruit() {
 		root.getChildren().remove(fruit);
 		fruit.setLayoutX(random.nextInt(19) * playersize);
 		fruit.setLayoutY(random.nextInt(19) * playersize);
 		root.getChildren().addAll(fruit);
-		
+
 	}
-	
+
 	/*
-	 * removes the score from the pane, changes position and add the score back to the pane
+	 * removes the score from the pane, changes position and add the score back to
+	 * the pane
 	 */
 	private void updateScore() {
 		root.getChildren().remove(scorelabel);
@@ -224,7 +225,7 @@ public class SnakeGame extends Application {
 	}
 
 	/*
-	 * checks if the head collides with the body 
+	 * checks if the head collides with the body
 	 */
 	private boolean checkBodyCollision() {
 		for (int i = 1; i < playerbody.size(); i++)
@@ -235,7 +236,7 @@ public class SnakeGame extends Application {
 	}
 
 	/*
-	 * checks if the head is still within the border 
+	 * checks if the head is still within the border
 	 */
 	private boolean headOutsiteBorder() {
 		if (-0.1 < playerhead.getLayoutX() && playerhead.getLayoutX() < width && -0.1 < playerhead.getLayoutY()
