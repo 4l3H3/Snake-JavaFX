@@ -42,16 +42,16 @@ public class SnakeGame extends Application {
 		if (playerhead.getLastMove() != null) {
 			Player tail = playerbody.get(playerbody.size() - 1);
 			switch (tail.getLastMove()) {
-			case "up":
+			case UP:
 				playerbody.add(new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() + playersize, Color.GREEN));
 				break;
-			case "right":
+			case RIGHT:
 				playerbody.add(new Player(playersize, (int) tail.getLayoutX() - playersize, (int) tail.getLayoutY(), Color.GREEN));
 				break;
-			case "left":
+			case LEFT:
 				playerbody.add(new Player(playersize, (int) tail.getLayoutX() + playersize, (int) tail.getLayoutY(), Color.GREEN));
 				break;
-			case "down":
+			case DOWN:
 				playerbody.add(new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() - playersize, Color.GREEN));
 				break;
 			// ..
@@ -66,16 +66,16 @@ public class SnakeGame extends Application {
 		if (playerhead.getPenultimateMove() != null && playerbody.size() > 1) {
 			for (int i = 1; i < playerbody.size(); i++) {
 				switch (playerbody.get(i - 1).getPenultimateMove()) {
-				case "up":
+				case UP:
 					playerbody.get(i).moveUp();
 					break;
-				case "left":
+				case LEFT:
 					playerbody.get(i).moveLeft();
 					break;
-				case "down":
+				case DOWN:
 					playerbody.get(i).moveDown();
 					break;
-				case "right":
+				case RIGHT:
 					playerbody.get(i).moveRight();
 					break;
 				default:
