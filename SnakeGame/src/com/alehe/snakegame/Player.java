@@ -9,8 +9,8 @@ public class Player extends Rectangle {
 	private String lastmove = null;
 	private String penultimatemove = null;
 
-	public Player(int size, int x, int y) {
-		super(size, size, Color.GREEN);
+	public Player(int size, int x, int y, Color color) {
+		super(size, size, color);
 		this.size = size;
 		setLayoutX(x);
 		setLayoutY(y);

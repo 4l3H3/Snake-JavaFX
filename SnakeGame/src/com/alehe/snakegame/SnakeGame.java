@@ -19,10 +19,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class SnakeGame extends Application {
-	private int playersize = 12;
+	private int playersize = 30;
 	private int width = playersize * 20;
 	private int height = playersize * 20;
-	// private int score = 0;
+	private int score = 0;
 	private int speed = 75;
 
 	private Random random = new Random();
@@ -33,6 +33,7 @@ public class SnakeGame extends Application {
 
 	private Pane root;
 	private Label gameoverlabel = new Label("Game Over");
+	private Label scorelabel = new Label(Integer.toString(score));
 
 	private boolean[] moveWASD = { false, false, false, false };
 	private boolean gameover = false;
@@ -42,16 +43,16 @@ public class SnakeGame extends Application {
 			Player tail = playerbody.get(playerbody.size() - 1);
 			switch (tail.getLastMove()) {
 			case "up":
-				playerbody.add(new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() + playersize));
+				playerbody.add(new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() + playersize, Color.GREEN));
 				break;
 			case "right":
-				playerbody.add(new Player(playersize, (int) tail.getLayoutX() - playersize, (int) tail.getLayoutY()));
+				playerbody.add(new Player(playersize, (int) tail.getLayoutX() - playersize, (int) tail.getLayoutY(), Color.GREEN));
 				break;
 			case "left":
-				playerbody.add(new Player(playersize, (int) tail.getLayoutX() + playersize, (int) tail.getLayoutY()));
+				playerbody.add(new Player(playersize, (int) tail.getLayoutX() + playersize, (int) tail.getLayoutY(), Color.GREEN));
 				break;
 			case "down":
-				playerbody.add(new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() - playersize));
+				playerbody.add(new Player(playersize, (int) tail.getLayoutX(), (int) tail.getLayoutY() - playersize, Color.GREEN));
 				break;
 			// ..
 			default:
@@ -86,11 +87,12 @@ public class SnakeGame extends Application {
 	}
 
 	private void updateFruit() {
-		root.getChildren().remove(fruit);
+		root.getChildren().removeAll(fruit, scorelabel);
 		fruit = new Rectangle(playersize, playersize, Color.RED);
-		fruit.setLayoutX(random.nextInt(19) * 12);
-		fruit.setLayoutY(random.nextInt(19) * 12);
-		root.getChildren().add(fruit);
+		fruit.setLayoutX(random.nextInt(19) * playersize);
+		fruit.setLayoutY(random.nextInt(19) * playersize);
+		scorelabel.setText(Integer.toString(++score));
+		root.getChildren().addAll(fruit, scorelabel);
 	}
 
 	private void checkBodyCollision() {
@@ -148,10 +150,13 @@ public class SnakeGame extends Application {
 		gameoverlabel.setStyle("-fx-font-family: samic-sans; -fx-text-fill: grey; -fx-font-size: 20px;");
 		gameoverlabel.setLayoutX(width / 3);
 		gameoverlabel.setLayoutY(height / 2);
-		playerhead = new Player(playersize, playersize * 8, playersize * 8);
+		scorelabel.setStyle("-fx-font-family: samic-sans; -fx-text-fill: grey; -fx-font-size: 20px;");
+		scorelabel.setLayoutX(width / 2);
+		scorelabel.setLayoutY(0);
+		playerhead = new Player(playersize, playersize * 8, playersize * 8, Color.DARKGREEN);
 		fruit = new Rectangle(playersize, playersize, Color.RED);
-		fruit.setLayoutX(random.nextInt(19) * 12);
-		fruit.setLayoutY(random.nextInt(19) * 12);
+		fruit.setLayoutX(random.nextInt(19) * playersize);
+		fruit.setLayoutY(random.nextInt(19) * playersize);
 		playerbody.add(playerhead);
 
 		root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -165,6 +170,7 @@ public class SnakeGame extends Application {
 
 		root.getChildren().addAll(playerbody);
 		root.getChildren().add(fruit);
+		root.getChildren().add(scorelabel);
 		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle("Snake");
 		window.setMinWidth(width);
