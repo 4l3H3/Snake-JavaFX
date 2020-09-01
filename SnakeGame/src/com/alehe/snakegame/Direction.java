@@ -1,5 +1,5 @@
 package com.alehe.snakegame;
 
-public enum Move {
+public enum Direction {
 	UP, LEFT, DOWN, RIGHT, NONE;
 }

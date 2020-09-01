@@ -6,8 +6,8 @@ import javafx.scene.shape.Rectangle;
 
 public class Player extends Rectangle {
 	private int size;
-	private Move lastmove = Move.NONE;
-	private Move penultimatemove = Move.NONE;
+	private Direction lastDirection = Direction.NONE;
+	private Direction penultimateDirection = Direction.NONE;
 
 	public Player(int size, int x, int y, Color color) {
 		super(size, size, color);
@@ -18,33 +18,33 @@ public class Player extends Rectangle {
 
 	public void moveUp() {
 		setLayoutY(getLayoutY() - size);
-		penultimatemove = lastmove;
-		lastmove = Move.UP;
+		penultimateDirection = lastDirection;
+		lastDirection = Direction.UP;
 	}
 
 	public void moveLeft() {
 		setLayoutX(getLayoutX() - size);
-		penultimatemove = lastmove;
-		lastmove = Move.LEFT;
+		penultimateDirection = lastDirection;
+		lastDirection = Direction.LEFT;
 	}
 
 	public void moveRight() {
 		setLayoutX(getLayoutX() + size);
-		penultimatemove = lastmove;
-		lastmove = Move.RIGHT;
+		penultimateDirection = lastDirection;
+		lastDirection = Direction.RIGHT;
 	}
 
 	public void moveDown() {
 		setLayoutY(getLayoutY() + size);
-		penultimatemove = lastmove;
-		lastmove = Move.DOWN;
+		penultimateDirection = lastDirection;
+		lastDirection = Direction.DOWN;
 	}
 
-	public Move getPenultimateMove() {
-		return penultimatemove;
+	public Direction getPenultimateDirection() {
+		return penultimateDirection;
 	}
 
-	public Move getLastMove() {
-		return lastmove;
+	public Direction getLastDirection() {
+		return lastDirection;
 	}
 }
