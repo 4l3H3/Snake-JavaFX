@@ -122,13 +122,20 @@ public class SnakeGame extends Application {
 				break;
 			}
 
-			checkBodyCollision();
+			if (headCollidesWithBody()){
+				gameover = true;
+				root.getChildren().add(gameoverlabel);
+			}
 			movePlayerBody();
 			if (playerhead.getLayoutX() == fruit.getLayoutX() && playerhead.getLayoutY() == fruit.getLayoutY()) {
-				updateFruit();
 				increasePlayerBody();
+				updateFruit();
+				updateScore();
 			}
-			checkInBound();
+			if (headOutsiteBorder()) {
+				gameover = true;
+				root.getChildren().add(gameoverlabel);
+			}
 
 			try {
 				Thread.sleep(speed);
@@ -168,6 +175,10 @@ public class SnakeGame extends Application {
 
 	}
 
+	/*
+	 * moves the entire playerbody without the head bases on the penultimate direction the
+	 * former part took
+	 */
 	private void movePlayerBody() {
 		if (playerbody.size() > 1) {
 			for (int i = 1; i < playerbody.size(); i++) {
@@ -192,30 +203,45 @@ public class SnakeGame extends Application {
 		}
 	}
 
+	/*
+	 * removes the Fruit from the pane, changes position and add the fruit back to the pane
+	 */
 	private void updateFruit() {
-		root.getChildren().removeAll(fruit, scorelabel);
-		fruit = new Rectangle(playersize, playersize, Color.RED);
+		root.getChildren().remove(fruit);
 		fruit.setLayoutX(random.nextInt(19) * playersize);
 		fruit.setLayoutY(random.nextInt(19) * playersize);
+		root.getChildren().addAll(fruit);
+		
+	}
+	
+	/*
+	 * removes the score from the pane, changes position and add the score back to the pane
+	 */
+	private void updateScore() {
+		root.getChildren().remove(scorelabel);
 		scorelabel.setText(Integer.toString(++score));
-		root.getChildren().addAll(fruit, scorelabel);
+		root.getChildren().add(scorelabel);
 	}
 
-	private void checkBodyCollision() {
+	/*
+	 * checks if the head collides with the body 
+	 */
+	private boolean headCollidesWithBody() {
 		for (int i = 1; i < playerbody.size(); i++)
 			if (playerhead.getLayoutX() == playerbody.get(i).getLayoutX()
-					&& playerhead.getLayoutY() == playerbody.get(i).getLayoutY()) {
-				gameover = true;
-				root.getChildren().add(gameoverlabel);
-			}
+					&& playerhead.getLayoutY() == playerbody.get(i).getLayoutY())
+				return true;
+		return false;
 	}
 
-	private void checkInBound() {
+	/*
+	 * checks if the head is still within the border 
+	 */
+	private boolean headOutsiteBorder() {
 		if (!(-0.1 < playerhead.getLayoutX() && playerhead.getLayoutX() < width && -0.1 < playerhead.getLayoutY()
-				&& playerhead.getLayoutY() < height)) {
-			gameover = true;
-			root.getChildren().add(gameoverlabel);
-		}
+				&& playerhead.getLayoutY() < height))
+			return true;
+		return false;
 
 	}
 
