@@ -1,4 +1,5 @@
 package com.alehe.snakegame;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +22,7 @@ public class SnakeGame extends Application {
 	private int playersize = 12;
 	private int width = playersize * 20;
 	private int height = playersize * 20;
-	//private int score = 0;
+	// private int score = 0;
 	private int speed = 75;
 
 	private Random random = new Random();
@@ -30,72 +31,11 @@ public class SnakeGame extends Application {
 	private List<Player> playerbody = new ArrayList<Player>();
 	private Rectangle fruit;
 
-	private Pane pane;
+	private Pane root;
 	private Label gameoverlabel = new Label("Game Over");
 
 	private boolean[] moveWASD = { false, false, false, false };
 	private boolean gameover = false;
-
-	private class Player extends Rectangle {
-		private int size;
-		private String lastmove = Move.UP.asString;
-		private String penultimatemove = null;
-
-		public Player(int size, int x, int y) {
-			super(size, size, Color.GREEN);
-			this.size = size;
-			setLayoutX(x);
-			setLayoutY(y);
-			setStyle("opacity: 0.6;");
-		}
-
-		public void moveUp() {
-			setLayoutY(getLayoutY() - size);
-			penultimatemove = lastmove;
-			lastmove = Move.UP.asString;
-		}
-
-		public void moveLeft() {
-			setLayoutX(getLayoutX() - size);
-			penultimatemove = lastmove;
-			lastmove = Move.LEFT.asString;
-		}
-
-		public void moveRight() {
-			setLayoutX(getLayoutX() + size);
-			penultimatemove = lastmove;
-			lastmove = Move.RIGHT.asString;
-		}
-
-		public void moveDown() {
-			setLayoutY(getLayoutY() + size);
-			penultimatemove = lastmove;
-			lastmove = Move.DOWN.asString;
-		}
-
-		public String getPenultimateMove() {
-			return penultimatemove;
-		}
-
-		public String getLastMove() {
-			return lastmove;
-		}
-	}
-
-	private enum Move {
-		UP("up"), LEFT("left"), DOWN("down"), RIGHT("right");
-
-		private String asString;
-
-		private Move(final String asString) {
-			this.asString = asString;
-		}
-
-		public String toString() {
-			return asString;
-		}
-	}
-
 
 	private void increasePlayerBody() {
 		if (playerhead.getLastMove() != null) {
@@ -117,7 +57,7 @@ public class SnakeGame extends Application {
 			default:
 				break;
 			}
-			pane.getChildren().add(playerbody.get(playerbody.size() - 1));
+			root.getChildren().add(playerbody.get(playerbody.size() - 1));
 		}
 	}
 
@@ -146,9 +86,11 @@ public class SnakeGame extends Application {
 	}
 
 	private void updateFruit() {
-		// fruit = new Rectangle(playersize, playersize, Color.RED);
+		root.getChildren().remove(fruit);
+		fruit = new Rectangle(playersize, playersize, Color.RED);
 		fruit.setLayoutX(random.nextInt(19) * 12);
 		fruit.setLayoutY(random.nextInt(19) * 12);
+		root.getChildren().add(fruit);
 	}
 
 	private void checkBodyCollision() {
@@ -156,7 +98,7 @@ public class SnakeGame extends Application {
 			if (playerhead.getLayoutX() == playerbody.get(i).getLayoutX()
 					&& playerhead.getLayoutY() == playerbody.get(i).getLayoutY()) {
 				gameover = true;
-				pane.getChildren().add(gameoverlabel);
+				root.getChildren().add(gameoverlabel);
 			}
 	}
 
@@ -164,11 +106,11 @@ public class SnakeGame extends Application {
 		if (!(-0.1 < playerhead.getLayoutX() && playerhead.getLayoutX() < width && -0.1 < playerhead.getLayoutY()
 				&& playerhead.getLayoutY() < height)) {
 			gameover = true;
-			pane.getChildren().add(gameoverlabel);
+			root.getChildren().add(gameoverlabel);
 		}
 
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -200,10 +142,9 @@ public class SnakeGame extends Application {
 		}
 	}
 
-	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Stage window = new Stage();
-		pane = new Pane();
+		root = new Pane();
 		gameoverlabel.setStyle("-fx-font-family: samic-sans; -fx-text-fill: grey; -fx-font-size: 20px;");
 		gameoverlabel.setLayoutX(width / 3);
 		gameoverlabel.setLayoutY(height / 2);
@@ -213,7 +154,7 @@ public class SnakeGame extends Application {
 		fruit.setLayoutY(random.nextInt(19) * 12);
 		playerbody.add(playerhead);
 
-		pane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+		root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
 		AnimationTimer timer = new AnimationTimer() {
 
@@ -222,14 +163,14 @@ public class SnakeGame extends Application {
 			}
 		};
 
-		pane.getChildren().addAll(playerbody);
-		pane.getChildren().add(fruit);
+		root.getChildren().addAll(playerbody);
+		root.getChildren().add(fruit);
 		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle("Snake");
 		window.setMinWidth(width);
 		window.setMinHeight(height);
 
-		Scene scene = new Scene(pane, height, width);
+		Scene scene = new Scene(root, height, width);
 
 		scene.setOnKeyPressed(e -> {
 			switch (e.getCode()) {
@@ -253,7 +194,6 @@ public class SnakeGame extends Application {
 		window.setResizable(false);
 		timer.start();
 		window.show();
-		
+
 	}
 }
-
