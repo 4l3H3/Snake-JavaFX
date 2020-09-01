@@ -122,7 +122,7 @@ public class SnakeGame extends Application {
 				break;
 			}
 
-			if (headCollidesWithBody()){
+			if (checkBodyCollision()){
 				gameover = true;
 				root.getChildren().add(gameoverlabel);
 			}
@@ -226,7 +226,7 @@ public class SnakeGame extends Application {
 	/*
 	 * checks if the head collides with the body 
 	 */
-	private boolean headCollidesWithBody() {
+	private boolean checkBodyCollision() {
 		for (int i = 1; i < playerbody.size(); i++)
 			if (playerhead.getLayoutX() == playerbody.get(i).getLayoutX()
 					&& playerhead.getLayoutY() == playerbody.get(i).getLayoutY())
@@ -238,10 +238,10 @@ public class SnakeGame extends Application {
 	 * checks if the head is still within the border 
 	 */
 	private boolean headOutsiteBorder() {
-		if (!(-0.1 < playerhead.getLayoutX() && playerhead.getLayoutX() < width && -0.1 < playerhead.getLayoutY()
-				&& playerhead.getLayoutY() < height))
-			return true;
-		return false;
+		if (-0.1 < playerhead.getLayoutX() && playerhead.getLayoutX() < width && -0.1 < playerhead.getLayoutY()
+				&& playerhead.getLayoutY() < height)
+			return false;
+		return true;
 
 	}
 
